@@ -60,6 +60,12 @@ public class App extends ListenerAdapter
         	{
         		arg = messageParts[1];
         	}
+        	if(channelName.equals("servers-status") && (objUser.getName().equals("QueryDevTest")) == false)
+        	{
+	        	System.out.println("Message Recived! Contents is as follows:");
+	        	System.out.println(objMsg.getContentRaw());
+	        	System.out.println("Author is: " + objUser.getName());
+        	}
         	String SpaceEngineersip = "107.150.63.18";
     		boolean SpaceEngineersup = false;
     		@SuppressWarnings("resource")
@@ -81,13 +87,17 @@ public class App extends ListenerAdapter
         		SpaceEngineersup = false;
 			}
         	DecimalFormat numberFormat = new DecimalFormat("#.00");
+        	if(command.substring(0,1).equals("^"))
+        		System.out.println("Meesage initation character entered! Reply is as follows!");
         	if (command.equals("^ServerStatus") && channelName.equals("servers-status")) {// && rolePos >= 32) {
         		if(arg == null || arg == "" || arg == " " || arg.toLowerCase().equals("all") || arg.toLowerCase().equals("both"))
         		{
     	    		if(SpaceEngineersup)
     	    		{
     	    			 objChannel.sendMessage("The SpaceEngineers Server is Online!").complete();
+    	    			 System.out.println("The SpaceEngineers Server is Online!");
     	    			 objChannel.sendMessage("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers()).complete();
+    	    			 System.out.println("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers());
     	    			 List<SourcePlayer> players = null;
 						try {
 							players = playerInfoFuture.get();
@@ -97,19 +107,27 @@ public class App extends ListenerAdapter
 							e1.printStackTrace();
 						}
 						if(players.size() >= 1)
+						{
 							objChannel.sendMessage("The Online Players Are:").complete();
+							System.out.println("The Online Players Are:");
+						}
     	    			 for(int i = 0; i < players.size(); i++)
+    	    			 {
     	    				 objChannel.sendMessage(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)").complete();
-    	    			 
-    	    		}
-    	    		 else
+    	    			 	 System.out.println(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)");
+    	    			 }
+    	    		}else {
     	    			 objChannel.sendMessage("The  SpaceEngineers Server is Offline!").complete();
+    	    			 System.out.println("The  SpaceEngineers Server is Offline!");
+    	    		 }
         		}else if(arg.toLowerCase().equals("spaceengineers"))
         		{
         			if(SpaceEngineersup)
-        			{
-        				objChannel.sendMessage("The SpaceEngineers Server is Online!").complete();
+    	    		{
+        			objChannel.sendMessage("The SpaceEngineers Server is Online!").complete();
+	    			 System.out.println("The SpaceEngineers Server is Online!");
 	    			 objChannel.sendMessage("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers()).complete();
+	    			 System.out.println("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers());
 	    			 List<SourcePlayer> players = null;
 					try {
 						players = playerInfoFuture.get();
@@ -118,25 +136,33 @@ public class App extends ListenerAdapter
 					} catch (ExecutionException e1) {
 						e1.printStackTrace();
 					}
-					if(players.size() >= 1)
+					if(players.size() >= 1) {
 						objChannel.sendMessage("The Online Players Are:").complete();
+						System.out.println("The Online Players Are:");
+					}
 	    			 for(int i = 0; i < players.size(); i++)
+	    			 {
 	    				 objChannel.sendMessage(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)").complete();
-        			}else
+	    			 	 System.out.println(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)");
+	    			 }
+        			}else {
     	        	objChannel.sendMessage("The SpaceEngineers Server is Offline!").complete();
-        		}else
+        			System.out.println("The  SpaceEngineers Server is Offline!");
+        			}
+        		}
+        	else
         		{
         			objChannel.sendMessage("Please enter the command with the server you wish to check afterwards (^ServerStatus SpaceEngineers)").complete();
+        			System.out.println("Please enter the command with the server you wish to check afterwards (^ServerStatus SpaceEngineers)");
         		}
-        	}
-        	//}else if(rolePos < 32)
-        	//{
-        	//	objChannel.sendMessage("Your Role Does Not Have Access to this bot!").complete();
-        	//}
-        	if(command.toLowerCase().equals("^help"))// && rolePos >= 32)
+        	}else if(command.toLowerCase().equals("^help"))// && rolePos >= 32)
         	{
         		objChannel.sendMessage("Currently avaliable command(s) are: ^ServerStatus (ServerName) which checks to see if the desired server is online.").complete();
-        	} //else if(rolePos < 32)
+        		System.out.println("Currently avaliable command(s) are: ^ServerStatus (ServerName) which checks to see if the desired server is online.");
+        	}else if(command.substring(0, 1).equals("^")) {
+        		objChannel.sendMessage("Please do ^help for help!").complete();
+        		System.out.println("Please do ^help for help!");
+        	}//else if(rolePos < 32)
         	//{
         	//	objChannel.sendMessage("Your Role Does Not Have Access to this bot!").complete();
         	//}
