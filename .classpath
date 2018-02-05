@@ -22,15 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Annette/.m2/repository/net/dv8tion/JDA/3.5.0_327/JDA-3.5.0_327.jar" sourcepath="C:/Users/Annette/.m2/repository/net/dv8tion/JDA/3.5.0_327/JDA-3.5.0_327-sources.jar">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="maven.groupId" value="net.dv8tion"/>
-			<attribute name="maven.artifactId" value="JDA"/>
-			<attribute name="maven.version" value="3.5.0_327"/>
-			<attribute name="maven.scope" value="compile"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" path="/ServerStatusBot"/>
+	<classpathentry kind="lib" path="C:/Users/fhsplab/Desktop/Server-Status-Query-Bot/JDA-3.5.0_327-withDependencies.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

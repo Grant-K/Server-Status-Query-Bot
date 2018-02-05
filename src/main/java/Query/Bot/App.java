@@ -29,7 +29,7 @@ public class App extends ListenerAdapter
 {
 	public static void main(String[] args) throws InterruptedException, ExecutionException, LoginException
     {
-		JDA jdaBot = new JDABuilder(AccountType.BOT).setToken("NDA4ODYyODcwMzcwMjU0ODQ4.DVWOwA.BfRrUxHa0l5b8ySEPZDWMbdlGdA").buildBlocking();
+		JDA jdaBot = new JDABuilder(AccountType.BOT).setToken("NDEwMTc0NjI1OTg1NTkzMzY0.DVpUZw.KD6cm_3h_BvhTaRVoFlsBCRtj6A").buildBlocking();
     	jdaBot.addEventListener(new App());
     	System.out.println("Bot Online");
     	
@@ -81,7 +81,7 @@ public class App extends ListenerAdapter
         		SpaceEngineersup = false;
 			}
         	DecimalFormat numberFormat = new DecimalFormat("#.00");
-        	if (command.equals("^ServerStatus") && channelName.equals("justraid-status")) {// && rolePos >= 32) {
+        	if (command.equals("^ServerStatus") && channelName.equals("servers-status")) {// && rolePos >= 32) {
         		if(arg == null || arg == "" || arg == " " || arg.toLowerCase().equals("all") || arg.toLowerCase().equals("both"))
         		{
     	    		if(SpaceEngineersup)
