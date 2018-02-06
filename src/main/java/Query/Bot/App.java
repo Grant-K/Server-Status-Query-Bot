@@ -24,10 +24,11 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.io.*;
 
+@SuppressWarnings("unused")
 public class App extends ListenerAdapter
 {
 	public static String cwd = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
-	public static String confPath = (cwd + "\\LNbot\\config.txt");
+	public static String confPath = (cwd + "/LNbot/config.txt");
 	public String statusRoom;
 	public FileReader fr = null;
   	public BufferedReader br = null;
@@ -57,6 +58,10 @@ public class App extends ListenerAdapter
 			if(line != null)
 				statusRoom = line;
 			br.close();
+			fw = new FileWriter(confPath);
+			pw = new PrintWriter(fw);
+			pw.println(statusRoom);
+			pw.close();
 		} catch (FileNotFoundException e2) {
 			System.out.println("Error!");
 		} catch (IOException e1) {
@@ -141,8 +146,11 @@ public class App extends ListenerAdapter
         if(messageParts.length > 1)
         	{
         		arg = messageParts[1];
-        		for(int i = 2; i < messageParts.length; i++)
-        			arg = arg + messageParts[i];
+        		if(messageParts.length > 2)
+        		{
+	        		for(int i = 2; i < messageParts.length; i++)
+	        			arg = arg + messageParts[i];	
+        		}
         	}
     	setStatusRoom();
         if(channelName.equals(statusRoom) && (objUser.isBot()) == false)
@@ -160,7 +168,7 @@ public class App extends ListenerAdapter
         		System.out.println("Mesage initation character entered! Reply is as follows!");
         		if (command.equals("^ServerStatus") && channelName.equals(statusRoom))
         		{
-        			System.out.println(arg + command);
+        			System.out.println("Command: " + command + "\nArg(s): " + arg);
         			if(arg == null || arg == "" || arg == " " || arg.toLowerCase().equals("all") || arg.toLowerCase().equals("both"))
         			{
         				if(SpaceEngineersup)
@@ -181,21 +189,23 @@ public class App extends ListenerAdapter
 								{
 									objChannel.sendMessage("The Online Players Are:").complete();
 									System.out.println("The Online Players Are:");
-								}
+								
 								 int playersOnline = players.size();
+								 String playersPrint = "";
 		    	    			 for(int i = 0; i < playersOnline; i++)
 		    	    			 {
-		    	    				 System.out.println(i);
 		    	    				 String playerName = players.get(i).getName();
 		    	    				 String playersTimeOnline = numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)";
-		    	    				 objChannel.sendMessage(playerName + "\t Time Online: " + playersTimeOnline ).queue();
-		    	    			 	 System.out.println(playerName + "\t Time Online: " + playersTimeOnline);
+		    	    				 playersPrint = playersPrint + "\n" + playerName + "\t Time Online: " + playersTimeOnline;
 		    	    			 }
+		    	    				 objChannel.sendMessage(playersPrint).queue();
+		    	    			 	 System.out.println(playersPrint);
+								 }
 		    	    		}
         				         else 
         				         {
-			    	    			 objChannel.sendMessage("The  SpaceEngineers Server is Offline!").complete();
-			    	    			 System.out.println("The  SpaceEngineers Server is Offline!");
+			    	    			 objChannel.sendMessage("The SpaceEngineers Server is Offline!").complete();
+			    	    			 System.out.println("The SpaceEngineers Server is Offline!");
 		    	    			 }
 		        	 }
         			 else if(arg.toLowerCase().equals("spaceengineers"))
@@ -219,16 +229,22 @@ public class App extends ListenerAdapter
 							 {
 								 System.out.println("Error!");
 							 }
-							 if(players.size() >= 1) 
-							 {
-								 objChannel.sendMessage("The Online Players Are:").complete();
-								 System.out.println("The Online Players Are:");
-							 }
-						     for(int i = 0; i < players.size(); i++)
-						     {
-						    	 objChannel.sendMessage(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)").complete();
-						     	System.out.println(players.get(i).getName() + "\t Time Online: " + numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)");
-						     }
+							 if(players.size() >= 1)
+								{
+									objChannel.sendMessage("The Online Players Are:").complete();
+									System.out.println("The Online Players Are:");
+								
+								 int playersOnline = players.size();
+								 String playersPrint = "";
+		    	    			 for(int i = 0; i < playersOnline; i++)
+		    	    			 {
+		    	    				 String playerName = players.get(i).getName();
+		    	    				 String playersTimeOnline = numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)";
+		    	    				 playersPrint = playersPrint + "\n" + playerName + "\t Time Online: " + playersTimeOnline;
+		    	    			 }
+		    	    				 objChannel.sendMessage(playersPrint).queue();
+		    	    			 	 System.out.println(playersPrint);
+								 }
 		        		  }
 		        		  else 
 		        		  {
