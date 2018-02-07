@@ -182,7 +182,7 @@ public class App extends ListenerAdapter
         if(command.substring(0,1).equals("^") && (objUser.isBot()) == false)
         	{
         		System.out.println("Mesage initation character entered! Reply is as follows!");
-        		if (command.toLowerCase().equals("^ServerStatus") && channelName.equals(statusRoom))
+        		if (command.toLowerCase().equals("^serverstatus") && channelName.equals(statusRoom))
         		{
         			System.out.println("Command: " + command + "\nArg(s): " + arg);
         			if(arg == null || arg == "" || arg == " " || arg.toLowerCase().equals("all") || arg.toLowerCase().equals("both"))
