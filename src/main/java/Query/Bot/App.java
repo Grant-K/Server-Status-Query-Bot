@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import javax.security.auth.login.LoginException;
 import com.ibasco.agql.protocols.valve.source.query.client.SourceQueryClient;
@@ -132,6 +133,21 @@ public class App extends ListenerAdapter
 			}
 	}
 	
+	public String formatSeconds(double seconds)
+	{
+		String formatedTime = null;
+		int sec = (int)seconds;
+		int min = sec/60%60;
+		int hour = sec/60/60;
+		sec = (int)seconds%60;
+		if(hour >= 1)
+			formatedTime = String.format("%02d:%02d:%02d", hour, min, sec);
+		else
+			formatedTime = String.format("%02d:%02d", min, sec);
+		System.out.println("Time has been formated from " + sec + " seconds to " + formatedTime);
+		return formatedTime;
+	}
+	
     public void onMessageReceived(MessageReceivedEvent e) 
     {
     	if (e.getAuthor().isBot()) return;
@@ -173,7 +189,7 @@ public class App extends ListenerAdapter
         			{
         				if(SpaceEngineersup)
 	        				{
-		    	    			objChannel.sendMessage("The SpaceEngineers Server is Online!").complete();
+		    	    			objChannel.sendMessage("The SpaceEngineers Server is Online!\n").complete();
 		    	    			System.out.println("The SpaceEngineers Server is Online!");
 		    	    			objChannel.sendMessage("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers()).complete();
 		    	    			System.out.println("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers());
@@ -187,24 +203,29 @@ public class App extends ListenerAdapter
 								}
 								if(players.size() >= 1)
 								{
-									objChannel.sendMessage("The Online Players Are:").complete();
-									System.out.println("The Online Players Are:");
+									objChannel.sendMessage("(Time Formated as HH:MM:SS)\nOnline Player(s) Info:").complete();
+									System.out.println("(Time Formated as HH:MM:SS)\nOnline Player(s) Info:");
 								
 								 int playersOnline = players.size();
-								 String playersPrint = "";
+								 String playersPrint = null;
 		    	    			 for(int i = 0; i < playersOnline; i++)
 		    	    			 {
 		    	    				 String playerName = players.get(i).getName();
-		    	    				 String playersTimeOnline = numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)";
-		    	    				 playersPrint = playersPrint + "\n" + playerName + "\t Time Online: " + playersTimeOnline;
+		    	    				 double playerTimeSeconds = players.get(i).getDuration();
+		    	    				 System.out.println(playerTimeSeconds);
+		    	    				 String playersTimeOnline = formatSeconds(playerTimeSeconds);
+		    	    				 if(i == 0)
+		    	    					 playersPrint = "Username: " + playerName + "\nTime Online: " + playersTimeOnline + "\n";
+		    	    				 else
+		    	    				 playersPrint = playersPrint + "\nUsername: " + playerName + "\nTime Online: " + playersTimeOnline + "\n";
 		    	    			 }
-		    	    				 objChannel.sendMessage(playersPrint).queue();
+		    	    				 objChannel.sendMessageFormat(playersPrint).queue();
 		    	    			 	 System.out.println(playersPrint);
 								 }
 		    	    		}
         				         else 
         				         {
-			    	    			 objChannel.sendMessage("The SpaceEngineers Server is Offline!").complete();
+			    	    			 objChannel.sendMessageFormat("The SpaceEngineers Server is Offline!").complete();
 			    	    			 System.out.println("The SpaceEngineers Server is Offline!");
 		    	    			 }
 		        	 }
@@ -212,7 +233,7 @@ public class App extends ListenerAdapter
 		        	 {
         				 if(SpaceEngineersup)
 		        		 {
-        					 objChannel.sendMessage("The SpaceEngineers Server is Online!").complete();
+        					 objChannel.sendMessage("The SpaceEngineers Server is Online!\n").complete();
 						     System.out.println("The SpaceEngineers Server is Online!");
 						     objChannel.sendMessage("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers()).complete();
 						     System.out.println("ServerName: " + serverInfo.getName() + " \nPlayers: " + serverInfo.getNumOfPlayers() + "/" + serverInfo.getMaxPlayers());
@@ -231,18 +252,23 @@ public class App extends ListenerAdapter
 							 }
 							 if(players.size() >= 1)
 								{
-									objChannel.sendMessage("The Online Players Are:").complete();
-									System.out.println("The Online Players Are:");
+									objChannel.sendMessage("(Time Formated as HH:MM:SS)\nOnline Player(s) Info:").complete();
+									System.out.println("(Time Formated as HH:MM:SS)\nOnline Player(s) Info:");
 								
 								 int playersOnline = players.size();
-								 String playersPrint = "";
+								 String playersPrint = null;
 		    	    			 for(int i = 0; i < playersOnline; i++)
 		    	    			 {
 		    	    				 String playerName = players.get(i).getName();
-		    	    				 String playersTimeOnline = numberFormat.format((players.get(i).getDuration()) / 60.0) + " (min)";
-		    	    				 playersPrint = playersPrint + "\n" + playerName + "\t Time Online: " + playersTimeOnline;
+		    	    				 double playerTimeSeconds = players.get(i).getDuration();
+		    	    				 System.out.println(playerTimeSeconds);
+		    	    				 String playersTimeOnline = formatSeconds(playerTimeSeconds);
+		    	    				 if(i == 0)
+		    	    					 playersPrint = "Username: " + playerName + "\nTime Online: " + playersTimeOnline + "\n";
+		    	    				 else
+		    	    				 playersPrint = playersPrint + "\nUsername: " + playerName + "\nTime Online: " + playersTimeOnline + "\n";
 		    	    			 }
-		    	    				 objChannel.sendMessage(playersPrint).queue();
+		    	    				 objChannel.sendMessageFormat(playersPrint).queue();
 		    	    			 	 System.out.println(playersPrint);
 								 }
 		        		  }
@@ -291,6 +317,7 @@ public class App extends ListenerAdapter
 	        			  System.out.println("Please do ^help for help!");
 			          }
 		           }
+        		//objMsg.delete().queueAfter(5, TimeUnit.SECONDS);
         	 }
     	}
 }
