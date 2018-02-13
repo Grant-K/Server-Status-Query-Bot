@@ -30,6 +30,7 @@ public class App extends ListenerAdapter
 {
 	public static String cwd = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
 	public static String confPath = (cwd + "/LNbot/config.txt");
+	public static String tokenPath = (cwd + "/LNbot/token.txt");
 	public String statusRoom;
 	public FileReader fr = null;
   	public BufferedReader br = null;
@@ -42,7 +43,20 @@ public class App extends ListenerAdapter
     {
 		System.out.println(cwd);
 		System.out.println(confPath);
-		JDA jdaBot = new JDABuilder(AccountType.BOT).setToken("NDA4ODYyODcwMzcwMjU0ODQ4.DVp4mQ.58Qn8wFhcIFGFwR5Ek032N7Xilo").buildBlocking();
+		String token= null;
+		try {
+			FileReader frs = new FileReader(tokenPath);
+			BufferedReader brs = new BufferedReader(frs);
+			String input = brs.readLine();
+			if(input != null)
+				token = input;
+			brs.close();
+		} catch (FileNotFoundException e2) {
+			System.out.println("Error!");
+		} catch (IOException e1) {
+			System.out.println("Error!");
+		}
+		JDA jdaBot = new JDABuilder(AccountType.BOT).setToken(token).buildBlocking();
     	jdaBot.addEventListener(new App());
     	System.out.println("Bot Online");
     	App driver = new App();
